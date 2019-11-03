@@ -36,12 +36,17 @@ const Game = {
       this.drawAll();
       this.moveAll();
 
+      this.clearObstacles()
+    console.log(this.obstacles)
+    if(this.framesCounter % 300 === 0) this.generateObstacles();
+    if(this.framesCounter > 1000) this.framesCounter = 0;
     }, 1000 / this.fps);
   },
 
   reset() {
     this.background = new Background(this.ctx, this.width, this.height);
     this.player = new Player(this.ctx, this.width, this.height, this.playerKeys);
+    this.obstacles = [];
   },
 
   clear() {
@@ -51,10 +56,19 @@ const Game = {
   drawAll() {
     this.background.draw();
     this.player.draw();
+    this.obstacles.forEach(obstacle => obstacle.draw())
   },
 
   moveAll() {
     this.background.move();
     this.player.move();
+    this.obstacles.forEach(obstacle => obstacle.move())
+  },
+
+  generateObstacles: function() {
+    this.obstacles.push(new Obstacle(this.ctx, 100, 100 , this.width, this.height))
+  },
+  clearObstacles: function() {
+    this.obstacles = this.obstacles.filter(obstacle => (obstacle.posY <= this.height))
   }
 };

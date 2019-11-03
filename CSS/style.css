@@ -4,3 +4,7 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+canvas{
+  border: 1px solid grey;
+}
