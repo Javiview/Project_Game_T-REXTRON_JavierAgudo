@@ -6,7 +6,7 @@ const Game = {
 
   fps: 60,
   framesCounter: 0,
-
+  obstacles: [],
   playerKeys: {
     LEFT_KEY: 37,
     RIGHT_KEY: 39,
@@ -14,6 +14,7 @@ const Game = {
     D_KEY: 68,
     SPACE: 32
   },
+  
 
   init() {
     this.canvas = document.getElementById("canvas");
@@ -40,7 +41,7 @@ const Game = {
       if (this.framesCounter % 200 === 0) this.generateObstacles();
       if (this.isCollision()) this.gameOver();
       if (this.framesCounter > 1000) this.framesCounter = 0;
-      console.log(this.obstacles)
+      
     }, 1000 / this.fps);
   },
 
@@ -52,7 +53,7 @@ const Game = {
       this.height,
       this.playerKeys
     );
-    this.obstacles = [];
+    
   },
 
   clear() {
@@ -91,30 +92,8 @@ const Game = {
   isCollision() {
     // colisiones genéricas
     // (p.x + p.w > o.x && o.x + o.w > p.x && p.y + p.h > o.y && o.y + o.h > p.y )
-    return this.obstacles.some(
-      obs => {
-      if (this.obs.posX_Random === 1){
-        this.player.posX + this.player.width > obs.posX &&
-        obs.posX + obs.width > this.player.posX &&
-        this.player.posY + this.player.height > obs.posY &&
-        obs.posY + obs.height > this.player.posY
-
-    }else if(this.obs.posX_Random === 2){
-
-              this.player.posX + this.player.width > obs.posX_2 &&
-              obs.posX_2 + obs.width > this.player.posX &&
-              this.player.posY + this.player.height > obs.posY &&
-              obs.posY + obs.height > this.player.posY
-          
-
-    }else if (this.obs.posX_Random === 3){
-              this.player.posX + this.player.width > obs.posX_3 &&
-              obs.posX_3 + obs.width > this.player.posX &&
-              this.player.posY + this.player.height > obs.posY &&
-              obs.posY + obs.height > this.player.posY
-          
-    }});
-
+    return this.obstacles.some(obs => (this.player.posX + this.player.width > obs.posX && obs.posX + obs.width > this.player.posX && this.player.posY + this.player.height > obs.posY && obs.posY + obs.height > this.player.posY ))
+    
    
   },
 
