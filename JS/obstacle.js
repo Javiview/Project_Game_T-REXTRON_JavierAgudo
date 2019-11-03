@@ -1,5 +1,5 @@
 class Obstacle {
-  constructor(ctx, width, height, gameWidth, gameHeight) {
+  constructor(ctx, width, height, gameWidth, gameHeight,velY) {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
@@ -11,7 +11,8 @@ class Obstacle {
     this.posX = this.randomPosX();
     this.posY = this.gameHeight - this.gameHeight - this.height;
     
-    this.velY = 2;
+    this.velY = velY;
+    
   }
   randomPosX (){
       if(this.posX_Random === 1)return this.posX =  this.gameWidth - this.gameWidth + this.width / 2;
