@@ -2,7 +2,7 @@ class Player {
   constructor(ctx, gameWidth, gameHeight, keys) {
     this.ctx = ctx;
     this.width = gameWidth / 6;
-    this.height = gameHeight / 5.9;
+    this.height = gameHeight / 5.5;
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
 
@@ -17,7 +17,7 @@ class Player {
 
 
     this.image = new Image();
-    this.image.src = "IMAGES/TREX_Sprite_Walk2.png"
+    this.image.src = "IMAGES/TREX_Sprite_Walk3.png"
 
     this.keys = keys;
     this.setListeners();
