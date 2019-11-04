@@ -9,7 +9,7 @@ const Game = {
 
   score: 0,
   velScore: 10,
-  dificulty: 250,
+  dificulty: 200,
   velDificulty: 1,
 
   playerKeys: {
@@ -48,14 +48,11 @@ const Game = {
       if (this.isCollision()) this.gameOver();
 
       if (this.framesCounter % this.velScore === 0) this.score++;
-      if (this.score === 100) this.velDificulty += 0.1;
-      if (this.framesCounter > 1000) {
-        this.dificulty -= 10;
-        this.framesCounter = 0;
-      }
-      console.log("DIF " + this.dificulty);
-      console.log("VELO " + this.velDificulty);
-
+      //if (this.score % 50 === 0) this.velDificulty += 0.1;
+      //if (this.score % 100 === 0) this.dificulty -= 3;
+      if (this.framesCounter > 1000) this.framesCounter = 0;
+      //console.log("DIF " + this.dificulty);
+      //console.log("VELO " + this.velDificulty);
     }, 1000 / this.fps);
   },
 

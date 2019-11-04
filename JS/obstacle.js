@@ -2,7 +2,7 @@ class Obstacle {
   constructor(ctx, width, height, gameWidth, gameHeight,velY) {
     this.ctx = ctx;
     this.width = width;
-    this.height = height;
+    this.height = height/2;
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
 
@@ -12,6 +12,8 @@ class Obstacle {
     this.posY = this.gameHeight - this.gameHeight - this.height;
     
     this.velY = velY;
+    this.image = new Image();
+    this.image.src = "IMAGES/Obstacle_Prueba.png";
     
   }
   randomPosX (){
@@ -20,12 +22,17 @@ class Obstacle {
       if(this.posX_Random === 3)return this.posX = (this.gameWidth / 3) * 2 + this.width / 2;
   }
   draw() {
-    this.ctx.fillStyle = "rgba(160, 49, 49, 1.000)";
-    this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
+    this.ctx.drawImage(
+      this.image,
+      this.posX,
+      this.posY,
+      this.width,
+      this.height
+    );
   }
 
   move() {
-    this.posY += this.velY;
+    this.posY += this.velY * 2; // velY * 2 por defecto
   }
 
   randomInt(min, max) {

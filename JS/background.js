@@ -1,5 +1,5 @@
 class Background {
-  constructor(ctx, width, height, velY) {
+  constructor(ctx, width, height,) {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
@@ -7,25 +7,25 @@ class Background {
     this.posX = 0;
     this.posY = 0;
 
-    this.velY = 5;
+    this.velY = 2; // 2 - La posicion por defecto.
 
     this.image = new Image();
     this.image.src = "IMAGES/space.jpg";
 
     this.image2 = new Image();
-    this.image2.src = "IMAGES/roads.jpg"
+    this.image2.src = "IMAGES/BG_prueba.png"
   }
 
   draw() {
     this.ctx.drawImage(
-      this.image,
+      this.image2,
       this.posX,
       this.posY,
       this.width,
       this.height
     );
     this.ctx.drawImage(
-      this.image,
+      this.image2,
       this.posX,
       this.posY - this.height,
       this.width,

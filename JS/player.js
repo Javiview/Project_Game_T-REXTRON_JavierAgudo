@@ -12,30 +12,43 @@ class Player {
     this.bloqMove = this.gameWidth / 3;
     this.bloqCounter = 0; //Permite Bloqear el movimiento del jugador en los carriles.
 
+    this.image = new Image();
+    this.image.src = "IMAGES/TREX_Prueba.png"
+
     this.keys = keys;
     this.setListeners();
   }
 
   draw() {
-    //this.ctx.fillStyle = "silver";
-    //this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
-    let grd = this.ctx.createLinearGradient(
+    this.ctx.drawImage(
+      this.image,
       this.posX,
       this.posY,
-      this.posX + this.width,
-      this.posY + this.height
+      this.width,
+      this.height
     );
+  // Rectangulo Rainbow
+  //   let grd = this.ctx.createLinearGradient(
+  //     this.posX,
+  //     this.posY,
+  //     this.posX + this.width,
+  //     this.posY + this.height
+  //   );
 
-    // Add colors
-    grd.addColorStop(0.0, "rgba(255, 0, 0, 1.000)");
-    grd.addColorStop(0.15, "rgba(255, 0, 255, 1.000)");
-    grd.addColorStop(0.33, "rgba(0, 0, 255, 1.000)");
-    grd.addColorStop(0.49, "rgba(0, 255, 255, 1.000)");
-    grd.addColorStop(0.67, "rgba(0, 255, 0, 1.000)");
-    grd.addColorStop(0.84, "rgba(255, 255, 0, 1.000)");
-    grd.addColorStop(1.0, "rgba(255, 0, 0, 1.000)");
-    this.ctx.fillStyle = grd;
-    this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
+  // Add colors
+  //   grd.addColorStop(0.0, "rgba(255, 0, 0, 1.000)");
+  //   grd.addColorStop(0.15, "rgba(255, 0, 255, 1.000)");
+  //   grd.addColorStop(0.33, "rgba(0, 0, 255, 1.000)");
+  //   grd.addColorStop(0.49, "rgba(0, 255, 255, 1.000)");
+  //   grd.addColorStop(0.67, "rgba(0, 255, 0, 1.000)");
+  //   grd.addColorStop(0.84, "rgba(255, 255, 0, 1.000)");
+  //   grd.addColorStop(1.0, "rgba(255, 0, 0, 1.000)");
+  //   this.ctx.fillStyle = grd;
+  //   this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
+  }
+
+  animate() {
+    
   }
 
   move() {
