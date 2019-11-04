@@ -15,9 +15,10 @@ class Player {
     this.frames = 6;
     this.framesIndex = 0;
 
+    this.lasers = [];
 
     this.image = new Image();
-    this.image.src = "IMAGES/TREX_Sprite_Walk3.png"
+    this.image.src = "IMAGES/TREX_Sprite_Walk3.png";
 
     this.keys = keys;
     this.setListeners();
@@ -35,37 +36,49 @@ class Player {
       this.width,
       this.height
     );
-    this.animate(framesCounter)
-  // Rectangulo Rainbow
-  //   let grd = this.ctx.createLinearGradient(
-  //     this.posX,
-  //     this.posY,
-  //     this.posX + this.width,
-  //     this.posY + this.height
-  //   );
+    this.clearLasers();
+    this.lasers.forEach(laser => laser.draw());
+    console.log(this.lasers);
+    this.animate(framesCounter);
+    // Rectangulo Rainbow
+    //   let grd = this.ctx.createLinearGradient(
+    //     this.posX,
+    //     this.posY,
+    //     this.posX + this.width,
+    //     this.posY + this.height
+    //   );
 
-  // Add colors
-  //   grd.addColorStop(0.0, "rgba(255, 0, 0, 1.000)");
-  //   grd.addColorStop(0.15, "rgba(255, 0, 255, 1.000)");
-  //   grd.addColorStop(0.33, "rgba(0, 0, 255, 1.000)");
-  //   grd.addColorStop(0.49, "rgba(0, 255, 255, 1.000)");
-  //   grd.addColorStop(0.67, "rgba(0, 255, 0, 1.000)");
-  //   grd.addColorStop(0.84, "rgba(255, 255, 0, 1.000)");
-  //   grd.addColorStop(1.0, "rgba(255, 0, 0, 1.000)");
-  //   this.ctx.fillStyle = grd;
-  //   this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
+    // Add colors
+    //   grd.addColorStop(0.0, "rgba(255, 0, 0, 1.000)");
+    //   grd.addColorStop(0.15, "rgba(255, 0, 255, 1.000)");
+    //   grd.addColorStop(0.33, "rgba(0, 0, 255, 1.000)");
+    //   grd.addColorStop(0.49, "rgba(0, 255, 255, 1.000)");
+    //   grd.addColorStop(0.67, "rgba(0, 255, 0, 1.000)");
+    //   grd.addColorStop(0.84, "rgba(255, 255, 0, 1.000)");
+    //   grd.addColorStop(1.0, "rgba(255, 0, 0, 1.000)");
+    //   this.ctx.fillStyle = grd;
+    //   this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
   }
 
   animate(framesCounter) {
-    if(framesCounter % 10 === 0) {
+    if (framesCounter % 10 === 0) {
       this.framesIndex++;
 
-      if(this.framesIndex > 5) this.framesIndex = 0;
+      if (this.framesIndex > 5) this.framesIndex = 0;
     }
   }
 
   move() {
-    //VACIO
+    this.lasers.forEach(laser => laser.move());
+  }
+
+  shoot() {
+    this.lasers.push(
+      new Laser(this.ctx, this.posX, this.posY, this.width, this.height)
+    );
+  }
+  clearLasers() {
+    this.lasers = this.lasers.filter(laser => laser.posY >= -10);
   }
 
   setListeners() {
@@ -88,6 +101,8 @@ class Player {
             this.bloqCounter++;
           }
           break;
+        case this.keys.SPACE:
+          this.shoot();
       }
     });
   }

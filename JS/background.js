@@ -9,9 +9,6 @@ class Background {
 
     this.velY = 2; // 2 - La posicion por defecto.
 
-    this.image = new Image();
-    this.image.src = "IMAGES/space.jpg";
-
     this.image2 = new Image();
     this.image2.src = "IMAGES/BG_prueba.png"
   }
