@@ -12,21 +12,30 @@ class Player {
     this.bloqMove = this.gameWidth / 3;
     this.bloqCounter = 0; //Permite Bloqear el movimiento del jugador en los carriles.
 
+    this.frames = 6;
+    this.framesIndex = 0;
+
+
     this.image = new Image();
-    this.image.src = "IMAGES/TREX_Prueba.png"
+    this.image.src = "IMAGES/TREX_Sprite_Walk2.png"
 
     this.keys = keys;
     this.setListeners();
   }
 
-  draw() {
+  draw(framesCounter) {
     this.ctx.drawImage(
       this.image,
+      this.framesIndex * Math.floor(this.image.width / this.frames),
+      0,
+      Math.floor(this.image.width / this.frames),
+      this.image.height,
       this.posX,
       this.posY,
       this.width,
       this.height
     );
+    this.animate(framesCounter)
   // Rectangulo Rainbow
   //   let grd = this.ctx.createLinearGradient(
   //     this.posX,
@@ -47,8 +56,12 @@ class Player {
   //   this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
   }
 
-  animate() {
-    
+  animate(framesCounter) {
+    if(framesCounter % 10 === 0) {
+      this.framesIndex++;
+
+      if(this.framesIndex > 5) this.framesIndex = 0;
+    }
   }
 
   move() {

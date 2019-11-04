@@ -23,7 +23,7 @@ const Game = {
   init() {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
-    this.width = window.innerWidth / 2.5;
+    this.width = 400;
     this.height = window.innerHeight * 0.97;
     this.canvas.width = this.width;
     this.canvas.height = this.height;
@@ -73,7 +73,7 @@ const Game = {
 
   drawAll() {
     this.background.draw();
-    this.player.draw();
+    this.player.draw(this.framesCounter);
     this.obstacles.forEach(obstacle => obstacle.draw());
     ScoreBoard.draw(this.score);
   },
