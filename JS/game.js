@@ -72,8 +72,8 @@ const Game = {
       this.height,
       this.playerKeys
     );
-    this.obstacles = [], 
-    ScoreBoard.init(this.ctx, this.score,this.width,this.vidas);
+    this.obstacles = [];
+    this.ScoreBoard = new ScoreBoard (this.ctx,this.score,this.width,this.vidas);
   },
 
   clear() {
@@ -86,7 +86,7 @@ const Game = {
     this.player.draw(this.framesCounter);
     this.obstacles.forEach(obstacle => obstacle.draw(this.framesCounter));
     //this.background2.draw();
-    ScoreBoard.draw(this.score,this.vidas);
+    this.ScoreBoard.draw(this.score,this.vidas);
   },
 
   moveAll() {

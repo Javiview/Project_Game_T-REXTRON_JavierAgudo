@@ -1,17 +1,18 @@
-const ScoreBoard = {
-  ctx: undefined,
-  score: undefined,
-  width: undefined,
-  vidas:undefined,
-
-  init: function(ctx, score, width,vidas) {
+class ScoreBoard {
+  constructor (ctx,score,width,vidas){
     this.ctx = ctx;
     this.score = score;
     this.width = width;
-    this.vidas =vidas;
-  },
+    this.vidas = vidas;
 
-  draw: function(score,vidas) {
+    this.image = new Image();
+    this.image2 = new Image();
+    this.image.src = "IMAGES/vidasBuenas.png";
+    this.image2.src = "IMAGES/ultimaVida.png";
+
+  }
+
+  draw(score,vidas) {
     this.ctx.beginPath();
     this.ctx.fillStyle = "rgba(131,131,131,.8)";
     this.ctx.fillRect(0,0, this.width, 40);
@@ -23,19 +24,20 @@ const ScoreBoard = {
 
     switch (vidas){
       case 3:
-          this.ctx.fillStyle = "white";
-          this.ctx.fillRect(this.width - 20, 5,10,30);
-          this.ctx.fillRect(this.width - 40, 5,10,30);
-          this.ctx.fillRect(this.width - 60, 5,10,30);
+          this.ctx.drawImage(this.image, this.width - 20,5,15,30);
+          this.ctx.drawImage(this.image, this.width - 40,5,15,30);
+          this.ctx.drawImage(this.image, this.width - 60,5,15,30);
         break;
       case 2:
           this.ctx.fillStyle = "white";
-          this.ctx.fillRect(this.width - 20, 5,10,30);
-          this.ctx.fillRect(this.width - 40, 5,10,30);
+          this.ctx.drawImage(this.image, this.width - 20,5,15,30);
+          this.ctx.drawImage(this.image, this.width - 40,5,15,30);
         break;
       case 1:
-          this.ctx.fillStyle = "red";
-          this.ctx.fillRect(this.width - 20, 5,10,30);
+          this.ctx.drawImage(this.image2, this.width - 20,5,15,30);
+        break;
+      case 0:
+        tthis.ctx.fillText("",this.width/2 + 20 ,30);
         break;
     }
 
