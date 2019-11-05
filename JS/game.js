@@ -7,6 +7,8 @@ const Game = {
   fps: 60,
   framesCounter: 0,
 
+  vidas:3,
+
   score: 0,
   velScore: 10,
   dificulty: 200,
@@ -45,7 +47,10 @@ const Game = {
 
       if (this.framesCounter % this.dificulty === 0) this.generateObstacles();
 
-      if (this.isCollision()) this.gameOver();
+      if (this.isCollision()) {
+        this.obstacles.shift();
+        this.vidas--
+      };
 
       if (this.framesCounter % this.velScore === 0) this.score++;
       //if (this.score % 50 === 0) this.velDificulty += 0.1;
@@ -53,6 +58,8 @@ const Game = {
       if (this.framesCounter > 1000) this.framesCounter = 0;
       //console.log("DIF " + this.dificulty);
       //console.log("VELO " + this.velDificulty);
+      if(this.vidas === 0)this.gameOver();
+    
     }, 1000 / this.fps);
   },
 
@@ -65,7 +72,8 @@ const Game = {
       this.height,
       this.playerKeys
     );
-    (this.obstacles = []), ScoreBoard.init(this.ctx, this.score);
+    this.obstacles = [], 
+    ScoreBoard.init(this.ctx, this.score,this.width,this.vidas);
   },
 
   clear() {
@@ -78,7 +86,7 @@ const Game = {
     this.player.draw(this.framesCounter);
     this.obstacles.forEach(obstacle => obstacle.draw(this.framesCounter));
     //this.background2.draw();
-    ScoreBoard.draw(this.score);
+    ScoreBoard.draw(this.score,this.vidas);
   },
 
   moveAll() {
