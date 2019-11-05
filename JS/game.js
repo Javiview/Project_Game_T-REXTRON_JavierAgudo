@@ -57,7 +57,8 @@ const Game = {
   },
 
   reset() {
-    this.background = new Background(this.ctx, this.width, this.height);
+    this.background = new Background(this.ctx,"IMAGES/Background_dirtroad.png", this.width, this.height);
+    //this.background2 = new Background(this.ctx,"IMAGES/Background_jungle_over.png", this.width, this.height);
     this.player = new Player(
       this.ctx,
       this.width,
@@ -73,8 +74,10 @@ const Game = {
 
   drawAll() {
     this.background.draw();
+    
     this.player.draw(this.framesCounter);
-    this.obstacles.forEach(obstacle => obstacle.draw());
+    this.obstacles.forEach(obstacle => obstacle.draw(this.framesCounter));
+    //this.background2.draw();
     ScoreBoard.draw(this.score);
   },
 
@@ -110,7 +113,7 @@ const Game = {
         this.player.posX + this.player.width > obs.posX &&
         obs.posX + obs.width > this.player.posX &&
         this.player.posY + this.player.height > obs.posY &&
-        obs.posY + obs.height > this.player.posY
+        obs.posY + obs.height - 20 > this.player.posY
     );
   },
 
