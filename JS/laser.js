@@ -2,8 +2,9 @@ class Laser {
   constructor(ctx, playerX, playerY, playerWidth, playerHeight) {
     this.ctx = ctx;
 
-    this.posX = playerX + playerWidth/2 +3;
-    this.posY = playerY -5;
+    this.posX = playerX + playerWidth / 2 + 3;
+    this.posY = playerY - 5;
+
     this.playerHeight = playerHeight;
 
     this.vy = 1;
@@ -12,11 +13,11 @@ class Laser {
     this.image.src = "IMAGES/laser.png";
   }
 
-  draw(){
-    this.ctx.drawImage(this.image,this.posX, this.posY,)
+  draw() {
+    this.ctx.drawImage(this.image, this.posX, this.posY);
   }
 
-  move(){
+  move() {
     this.posY -= this.vy;
   }
 }

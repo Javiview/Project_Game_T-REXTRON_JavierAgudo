@@ -1,6 +1,7 @@
 class Player {
   constructor(ctx, gameWidth, gameHeight, keys) {
     this.ctx = ctx;
+
     this.width = gameWidth / 6;
     this.height = gameHeight / 5;
     this.gameWidth = gameWidth;
@@ -10,56 +11,68 @@ class Player {
     this.posY = (this.gameHeight / 3) * 2.3;
 
     this.bloqMove = this.gameWidth / 3;
-    this.bloqCounter = 0; //Permite Bloqear el movimiento del jugador en los carriles.
+    this.bloqCounter = 0; // Railway Bloq.
 
-    this.frames = 6;
+    this.frames = 6; //sprites
     this.framesIndex = 0;
 
-    this.derecha = false;
-    this.izquierda = false;
-
-    this.lasers = [];
+    this.rightFrame = false; // Anim. right
+    this.leftFrame = false; //Anim. left
 
     this.image = new Image();
     this.image.src = "IMAGES/TREX_Sprite_Walk3.png";
 
     this.imageDer = new Image();
-    this.imageDer.src = "IMAGES/right_TREX.png"
+    this.imageDer.src = "IMAGES/right_TREX.png";
 
     this.imageIzq = new Image();
     this.imageIzq.src = "IMAGES/left_TREX.png";
+
+    this.celulaLaser = [];
 
     this.keys = keys;
     this.setListeners();
   }
 
   draw(framesCounter) {
-    if(this.derecha === true){
-      this.ctx.drawImage (this.imageDer,this.posX,this.posY,this.width,this.height)
-      this.timeOut = setTimeout(()=>{
+    if (this.rightFrame === true) {
+      this.ctx.drawImage(
+        this.imageDer,
+        this.posX,
+        this.posY,
+        this.width,
+        this.height
+      );
+      this.timeOut = setTimeout(() => {
+        this.rightFrame = false;
+      }, 100);
+    } else if (this.leftFrame === true) {
+      this.ctx.drawImage(
+        this.imageIzq,
+        this.posX,
+        this.posY,
+        this.width,
+        this.height
+      );
+      this.timeOut = setTimeout(() => {
+        this.leftFrame = false;
+      }, 100);
+    } else {
+      this.ctx.drawImage(
+        this.image,
+        this.framesIndex * Math.floor(this.image.width / this.frames),
+        0,
+        Math.floor(this.image.width / this.frames),
+        this.image.height - 1,
+        this.posX,
+        this.posY,
+        this.width,
+        this.height
+      );
+    }
 
-        this.derecha = false;
-      },100);
-    }else if(this.izquierda === true){
-      this.ctx.drawImage (this.imageIzq,this.posX,this.posY,this.width,this.height)
-      this.timeOut = setTimeout(()=>{
-
-        this.izquierda = false;
-      },100);}else{
-    this.ctx.drawImage(
-      this.image,
-      this.framesIndex * Math.floor(this.image.width / this.frames),
-      0,
-      Math.floor(this.image.width / this.frames),
-      this.image.height -1,
-      this.posX,
-      this.posY,
-      this.width,
-      this.height
-    )};
     this.clearLasers();
-    this.lasers.forEach(laser => laser.draw());
-    console.log(this.lasers);
+    this.celulaLaser.forEach(laser => laser.draw());
     this.animate(framesCounter);
   }
 
@@ -72,16 +85,17 @@ class Player {
   }
 
   move() {
-    this.lasers.forEach(laser => laser.move());
+    this.celulaLaser.forEach(laser => laser.move());
   }
 
   shoot() {
-    this.lasers.push(
+    this.celulaLaser.push(
       new Laser(this.ctx, this.posX, this.posY, this.width, this.height)
     );
   }
+
   clearLasers() {
-    this.lasers = this.lasers.filter(laser => laser.posY >= -10);
+    this.celulaLaser = this.celulaLaser.filter(laser => laser.posY >= -10);
   }
 
   setListeners() {
@@ -89,8 +103,8 @@ class Player {
       switch (e.keyCode) {
         case this.keys.LEFT_KEY:
         case this.keys.A_KEY:
-          console.log("IZQUIERDA");
-          this.izquierda = true;
+          this.leftFrame = true;
+
           if (this.bloqCounter === 0 || this.bloqCounter === 1) {
             this.posX -= this.bloqMove;
             this.bloqCounter--;
@@ -99,14 +113,14 @@ class Player {
 
         case this.keys.RIGHT_KEY:
         case this.keys.D_KEY:
-          console.log("DERECHA");
-          this.derecha = true;
+          this.rightFrame = true;
+
           if (this.bloqCounter === 0 || this.bloqCounter === -1) {
             this.posX += this.bloqMove;
             this.bloqCounter++;
-            
           }
           break;
+
         case this.keys.SPACE:
           this.shoot();
       }

@@ -7,8 +7,8 @@ const Game = {
   fps: 60,
   framesCounter: 0,
 
-  vidas:3,
-
+  //Game atributes
+  lifes: 3,
   score: 0,
   velScore: 10,
   dificulty: 200,
@@ -40,40 +40,54 @@ const Game = {
       this.framesCounter++;
 
       this.clear();
+
       this.drawAll();
       this.moveAll();
 
       this.clearObstacles();
-
+      //Rate Obstacles
       if (this.framesCounter % this.dificulty === 0) this.generateObstacles();
 
+      //Colider
       if (this.isCollision()) {
         this.obstacles.shift();
-        this.vidas--
-      };
-
+        this.lifes--;
+      }
+      //Update Score
       if (this.framesCounter % this.velScore === 0) this.score++;
-      //if (this.score % 50 === 0) this.velDificulty += 0.1;
-      //if (this.score % 100 === 0) this.dificulty -= 3;
+
+      //Framescounter Reset
       if (this.framesCounter > 1000) this.framesCounter = 0;
-      //console.log("DIF " + this.dificulty);
-      //console.log("VELO " + this.velDificulty);
-      if(this.vidas === 0)this.gameOver();
-    
+
+      //Game Over
+      if (this.lifes === 0) this.gameOver();
     }, 1000 / this.fps);
   },
 
   reset() {
-    this.background = new Background(this.ctx,"IMAGES/Background_dirtroad.png", this.width, this.height);
-    //this.background2 = new Background(this.ctx,"IMAGES/Background_jungle_over.png", this.width, this.height);
+    //BG
+    this.background = new Background(
+      this.ctx,
+      "IMAGES/Background_dirtroad.png",
+      this.width,
+      this.height
+    );
+    //Player
     this.player = new Player(
       this.ctx,
       this.width,
       this.height,
       this.playerKeys
     );
+    //Obstacles
     this.obstacles = [];
-    this.ScoreBoard = new ScoreBoard (this.ctx,this.score,this.width,this.vidas);
+    //Score
+    this.ScoreBoard = new ScoreBoard(
+      this.ctx,
+      this.score,
+      this.width,
+      this.vidas
+    );
   },
 
   clear() {
@@ -82,11 +96,9 @@ const Game = {
 
   drawAll() {
     this.background.draw();
-    
     this.player.draw(this.framesCounter);
     this.obstacles.forEach(obstacle => obstacle.draw(this.framesCounter));
-    //this.background2.draw();
-    this.ScoreBoard.draw(this.score,this.vidas);
+    this.ScoreBoard.draw(this.score, this.lifes);
   },
 
   moveAll() {
@@ -107,6 +119,7 @@ const Game = {
       )
     );
   },
+
   clearObstacles() {
     this.obstacles = this.obstacles.filter(
       obstacle => obstacle.posY <= this.height
@@ -114,8 +127,9 @@ const Game = {
   },
 
   isCollision() {
-    // colisiones genéricas
-    // (p.x + p.w > o.x && o.x + o.w > p.x && p.y + p.h > o.y && o.y + o.h > p.y )
+    /*colisiones genéricas
+    (p.x + p.w > o.x && o.x + o.w > p.x && p.y + p.h > o.y && o.y + o.h > p.y ) */
+
     return this.obstacles.some(
       obs =>
         this.player.posX + this.player.width > obs.posX &&
