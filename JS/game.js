@@ -6,6 +6,7 @@ const Game = {
 
   fps: 60,
   framesCounter: 0,
+  checkObs: 2,
 
   //Game atributes
   lifes: 1,
@@ -46,13 +47,17 @@ const Game = {
       this.moveAll();
 
       this.clearObstacles();
-      // Rate Obstacles
+      // Rate Obstacles & Enemies
       if (this.framesCounter % this.dificulty === 0) this.generateObstacles();
-      if (this.framesCounter % 200 === 0)this.generateEnemies();
+      if (this.framesCounter % 250 === 0) this.generateEnemies();
 
       //Colider
-      if (this.isCollision()) {
+      if (this.isCollisionObstacles()) {
         this.obstacles.shift();
+        this.lifes--;
+      }
+      if (this.isCollisionEnemies()) {
+        this.enemies.shift();
         this.lifes--;
       }
       //Update Score
@@ -63,7 +68,7 @@ const Game = {
 
       //Game Over
       if (this.lifes === 0) this.gameOver();
-      console.log(this.enemies)
+      // console.log(this.enemies)
     }, 1000 / this.fps);
   },
 
@@ -103,7 +108,7 @@ const Game = {
     this.background.draw();
     this.player.draw(this.framesCounter, this.death);
     this.obstacles.forEach(obstacle => obstacle.draw(this.framesCounter));
-    this.enemies.forEach(enemy => enemy.draw());
+    this.enemies.forEach(enemy => enemy.draw(this.framesCounter));
     this.ScoreBoard.draw(this.score, this.lifes);
   },
 
@@ -127,6 +132,7 @@ const Game = {
     );
   },
   generateEnemies() {
+    this.noSameRoad();
     this.enemies.push(
       new Enemies(
         this.ctx,
@@ -135,7 +141,7 @@ const Game = {
         this.width,
         this.height,
         this.velDificulty,
-        this.obstacles[0].posX_Random,
+        this.checkObs
       )
     );
   },
@@ -144,12 +150,10 @@ const Game = {
     this.obstacles = this.obstacles.filter(
       obstacle => obstacle.posY <= this.height
     );
-    this.enemies = this.enemies.filter(
-      enemy => enemy.posY <= this.height
-    );
+    this.enemies = this.enemies.filter(enemy => enemy.posY <= this.height);
   },
 
-  isCollision() {
+  isCollisionObstacles() {
     /*colisiones genéricas
     (p.x + p.w > o.x && o.x + o.w > p.x && p.y + p.h > o.y && o.y + o.h > p.y ) */
 
@@ -161,16 +165,28 @@ const Game = {
         obs.posY + obs.height - 20 > this.player.posY
     );
   },
+  isCollisionEnemies() {
+    return this.enemies.some(
+      enemy =>
+        this.player.posX + this.player.width > enemy.posX &&
+        enemy.posX + enemy.width > this.player.posX &&
+        this.player.posY + this.player.height > enemy.posY &&
+        enemy.posY + enemy.height - 20 > this.player.posY
+    );
+  },
 
   gameOver() {
     this.death = true;
     this.timeOut = setTimeout(() => {
-      clearInterval(this.intervalID);},300)
+      clearInterval(this.intervalID);
+    }, 300);
   },
 
-  noSameRoad(){
-      if (this.obstacles.lenght === 1)this.obstacles[0].posX_Random;
-      if (this.obstacles.lenght === 2)this.obstacles[1].posX_Random;
-
+  noSameRoad() {
+    if (this.obstacles.lenght === 1 || this.obstacles.lenght === 0) {
+      this.checkObs = this.obstacles[0].posX_Random;
+    } else {
+      this.checkObs = this.obstacles[1].posX_Random;
+    }
   }
 };

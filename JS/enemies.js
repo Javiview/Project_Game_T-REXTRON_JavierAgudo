@@ -2,7 +2,7 @@ class Enemies {
   constructor(ctx, width, height, gameWidth, gameHeight, velY, posX_Random_obstacle) {
     this.ctx = ctx;
     this.width = width;
-    this.height = height / 2;
+    this.height = height - 20;
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
 
@@ -17,7 +17,7 @@ class Enemies {
     this.image = new Image();
     this.image.src = "IMAGES/Enemy_sprite.png";
 
-    this.frames = 2;
+    this.frames = 4;
     this.framesIndex = 0;
   }
 
@@ -41,27 +41,31 @@ class Enemies {
       
   }
 
-  draw() {
+  draw(framesCounter) {
     this.ctx.drawImage(
       this.image,
+      0,
+      this.framesIndex * Math.floor(this.image.height / this.frames),
+      this.image.width,
+      Math.floor(this.image.height / this.frames),
       this.posX,
       this.posY,
       this.width,
       this.height
     );
-    // this.animate(framesCounter);
+    this.animate(framesCounter);
   }
 
-  //   animate(framesCounter) {
-  //     if (framesCounter % 30 === 0) {
-  //       this.framesIndex++;
+    animate(framesCounter) {
+      if (framesCounter % 30 === 0) {
+        this.framesIndex++;
 
-  //       if (this.framesIndex >= 2) this.framesIndex = 0;
-  //     }
-  //   }
+        if (this.framesIndex > 3) this.framesIndex = 0;
+      }
+    }
 
   move() {
-    this.posY += this.velY * 2; // velY * 2 por defecto
+    this.posY += this.velY * 3; // velY * 2 por defecto
   }
 
   randomInt(min, max) {
