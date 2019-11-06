@@ -28,47 +28,60 @@ class Player {
     this.imageIzq = new Image();
     this.imageIzq.src = "IMAGES/left_TREX.png";
 
+    this.imageDeath = new Image();
+    this.imageDeath.src = "IMAGES/T_Rex_death_sprite.png";
+
     this.celulaLaser = [];
 
     this.keys = keys;
     this.setListeners();
   }
 
-  draw(framesCounter) {
-    if (this.rightFrame === true) {
+  draw(framesCounter, death) {
+    if (death === true) {
       this.ctx.drawImage(
-        this.imageDer,
-        this.posX,
+        this.imageDeath,
+        this.posX -20,
         this.posY,
-        this.width,
-        this.height
+        this.width + 40,
+        this.height/1.5
       );
-      this.timeOut = setTimeout(() => {
-        this.rightFrame = false;
-      }, 100);
-    } else if (this.leftFrame === true) {
-      this.ctx.drawImage(
-        this.imageIzq,
-        this.posX,
-        this.posY,
-        this.width,
-        this.height
-      );
-      this.timeOut = setTimeout(() => {
-        this.leftFrame = false;
-      }, 100);
     } else {
-      this.ctx.drawImage(
-        this.image,
-        this.framesIndex * Math.floor(this.image.width / this.frames),
-        0,
-        Math.floor(this.image.width / this.frames),
-        this.image.height - 1,
-        this.posX,
-        this.posY,
-        this.width,
-        this.height
-      );
+      if (this.rightFrame === true) {
+        this.ctx.drawImage(
+          this.imageDer,
+          this.posX,
+          this.posY,
+          this.width,
+          this.height
+        );
+        this.timeOut = setTimeout(() => {
+          this.rightFrame = false;
+        }, 100);
+      } else if (this.leftFrame === true) {
+        this.ctx.drawImage(
+          this.imageIzq,
+          this.posX,
+          this.posY,
+          this.width,
+          this.height
+        );
+        this.timeOut = setTimeout(() => {
+          this.leftFrame = false;
+        }, 100);
+      } else {
+        this.ctx.drawImage(
+          this.image,
+          this.framesIndex * Math.floor(this.image.width / this.frames),
+          0,
+          Math.floor(this.image.width / this.frames),
+          this.image.height - 1,
+          this.posX,
+          this.posY,
+          this.width,
+          this.height
+        );
+      }
     }
 
     this.clearLasers();

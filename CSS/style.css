@@ -1,4 +1,7 @@
 body {
+  margin: 0;
+  padding: 0;
+
   background-image: url(../IMAGES/BG_body.jpg);
   display: flex;
   justify-content: center;

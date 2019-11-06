@@ -36,7 +36,7 @@ class ScoreBoard {
         this.ctx.drawImage(this.image2, this.width - 20, 5, 15, 30);
         break;
       case 0:
-        tthis.ctx.fillText("", this.width / 2 + 20, 30);
+        this.ctx.fillText("", this.width / 2 + 20, 30);
         break;
     }
   }

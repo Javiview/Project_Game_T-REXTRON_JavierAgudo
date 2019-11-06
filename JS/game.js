@@ -8,7 +8,8 @@ const Game = {
   framesCounter: 0,
 
   //Game atributes
-  lifes: 3,
+  lifes: 1,
+  death: false,
   score: 0,
   velScore: 10,
   dificulty: 200,
@@ -45,8 +46,9 @@ const Game = {
       this.moveAll();
 
       this.clearObstacles();
-      //Rate Obstacles
+      // Rate Obstacles
       if (this.framesCounter % this.dificulty === 0) this.generateObstacles();
+      if (this.framesCounter % 200 === 0)this.generateEnemies();
 
       //Colider
       if (this.isCollision()) {
@@ -61,6 +63,7 @@ const Game = {
 
       //Game Over
       if (this.lifes === 0) this.gameOver();
+      console.log(this.enemies)
     }, 1000 / this.fps);
   },
 
@@ -81,6 +84,8 @@ const Game = {
     );
     //Obstacles
     this.obstacles = [];
+    //Enemies
+    this.enemies = [];
     //Score
     this.ScoreBoard = new ScoreBoard(
       this.ctx,
@@ -96,8 +101,9 @@ const Game = {
 
   drawAll() {
     this.background.draw();
-    this.player.draw(this.framesCounter);
+    this.player.draw(this.framesCounter, this.death);
     this.obstacles.forEach(obstacle => obstacle.draw(this.framesCounter));
+    this.enemies.forEach(enemy => enemy.draw());
     this.ScoreBoard.draw(this.score, this.lifes);
   },
 
@@ -105,6 +111,7 @@ const Game = {
     this.background.move();
     this.player.move();
     this.obstacles.forEach(obstacle => obstacle.move());
+    this.enemies.forEach(enemy => enemy.move());
   },
 
   generateObstacles() {
@@ -119,10 +126,26 @@ const Game = {
       )
     );
   },
+  generateEnemies() {
+    this.enemies.push(
+      new Enemies(
+        this.ctx,
+        this.player.width,
+        this.player.height,
+        this.width,
+        this.height,
+        this.velDificulty,
+        this.obstacles[0].posX_Random,
+      )
+    );
+  },
 
   clearObstacles() {
     this.obstacles = this.obstacles.filter(
       obstacle => obstacle.posY <= this.height
+    );
+    this.enemies = this.enemies.filter(
+      enemy => enemy.posY <= this.height
     );
   },
 
@@ -140,6 +163,14 @@ const Game = {
   },
 
   gameOver() {
-    clearInterval(this.intervalID);
+    this.death = true;
+    this.timeOut = setTimeout(() => {
+      clearInterval(this.intervalID);},300)
+  },
+
+  noSameRoad(){
+      if (this.obstacles.lenght === 1)this.obstacles[0].posX_Random;
+      if (this.obstacles.lenght === 2)this.obstacles[1].posX_Random;
+
   }
 };
