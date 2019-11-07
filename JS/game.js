@@ -60,6 +60,8 @@ const Game = {
         this.enemies.shift();
         this.lifes--;
       }
+      this.isCollisionLaser();
+
       //Update Score
       if (this.framesCounter % this.velScore === 0) this.score++;
 
@@ -68,7 +70,6 @@ const Game = {
 
       //Game Over
       if (this.lifes === 0) this.gameOver();
-      // console.log(this.enemies)
     }, 1000 / this.fps);
   },
 
@@ -87,10 +88,12 @@ const Game = {
       this.height,
       this.playerKeys
     );
+
     //Obstacles
     this.obstacles = [];
     //Enemies
     this.enemies = [];
+    this.enemiesDeath = [];
     //Score
     this.ScoreBoard = new ScoreBoard(
       this.ctx,
@@ -107,8 +110,10 @@ const Game = {
   drawAll() {
     this.background.draw();
     this.player.draw(this.framesCounter, this.death);
+    this.celulaLaser = this.player.celulaLaser;
     this.obstacles.forEach(obstacle => obstacle.draw(this.framesCounter));
     this.enemies.forEach(enemy => enemy.draw(this.framesCounter));
+    this.enemiesDeath.forEach(enemyDeath => enemyDeath.draw(this.framesCounter))
     this.ScoreBoard.draw(this.score, this.lifes);
   },
 
@@ -145,12 +150,14 @@ const Game = {
       )
     );
   },
+  
 
   clearObstacles() {
     this.obstacles = this.obstacles.filter(
       obstacle => obstacle.posY <= this.height
     );
     this.enemies = this.enemies.filter(enemy => enemy.posY <= this.height);
+    
   },
 
   isCollisionObstacles() {
@@ -172,6 +179,43 @@ const Game = {
         enemy.posX + enemy.width > this.player.posX &&
         this.player.posY + this.player.height > enemy.posY &&
         enemy.posY + enemy.height - 20 > this.player.posY
+    );
+  },
+  //CONSTRUCCION
+  isCollisionLaser() {
+    this.player.celulaLaser.forEach(laser =>
+      this.enemies.forEach(enemy => {
+        if (
+          laser.posY < enemy.posY + enemy.height / 2 &&
+          laser.posX > enemy.posX &&
+          laser.posX < enemy.posX + enemy.width
+        ) {
+          
+          let addEnemy = this.enemiesDeath.push(
+            new EnemiesDeath(
+              this.ctx,
+              enemy.posX,
+              enemy.posY,
+              enemy.width,
+              enemy.height
+              
+            )
+           
+          );
+          
+          addEnemy;
+          this.enemies.shift();
+          this.timeOutDeath = setTimeout(() => {
+            this.enemiesDeath.shift();
+          }, 200);
+
+          this.score += 10;
+          let index = this.celulaLaser.indexOf(laser);
+          if (index > -1) {
+            this.player.celulaLaser.splice(index, 1);
+          }
+        }
+      })
     );
   },
 

@@ -22,11 +22,11 @@ class Obstacle {
 
   randomPosX() {
     if (this.posX_Random === 1)
-      return (this.posX = this.gameWidth - this.gameWidth + this.width / 2);
+      return (this.posX = this.gameWidth - this.gameWidth + this.width / 2 - 10);
     if (this.posX_Random === 2)
-      return (this.posX = this.gameWidth / 2 - this.width / 2);
+      return (this.posX = this.gameWidth / 2 - this.width / 2 - 10);
     if (this.posX_Random === 3)
-      return (this.posX = (this.gameWidth / 3) * 2 + this.width / 2);
+      return (this.posX = (this.gameWidth / 3) * 2 + this.width / 2 - 10);
   }
 
   draw(framesCounter) {
@@ -38,7 +38,7 @@ class Obstacle {
       this.image.height,
       this.posX,
       this.posY,
-      this.width,
+      this.width + 20,
       this.height
     );
     this.animate(framesCounter);
