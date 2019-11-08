@@ -16,6 +16,8 @@ class Obstacle {
     this.image = new Image();
     this.image.src = "IMAGES/Barricades.png";
 
+    
+
     this.frames = 2;
     this.framesIndex = 0;
   }

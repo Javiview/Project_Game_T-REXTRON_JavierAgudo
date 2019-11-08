@@ -12,6 +12,10 @@ class EnemiesDeath {
 
     this.image = new Image();
     this.image.src = "IMAGES/Enemy_death_sprite.png";
+
+    this.sound = new Audio();
+    this.sound.src = "SOUNDS/enemyDead.wav"
+    this.sound.play();
    
   }
 
@@ -27,7 +31,13 @@ class EnemiesDeath {
       this.width,
       this.height
     );
+    this.ctx.beginPath();
+    this.ctx.fillStyle = "rgb(98, 252, 3)";
+    this.ctx.font = "25px 'Press Start 2P'";
+    this.ctx.fillText( "+10", this.posX, this.posY);
+    this.ctx.closePath();
     this.animate(framesCounter)
+    
   }
   animate(framesCounter) {
     if (framesCounter % 10 === 0) {

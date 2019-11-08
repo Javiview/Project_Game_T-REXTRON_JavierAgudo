@@ -31,6 +31,10 @@ class Player {
     this.imageDeath = new Image();
     this.imageDeath.src = "IMAGES/T_Rex_death_sprite.png";
 
+    this.sound = new Audio();
+    this.sound.src = "SOUNDS/jump.wav";
+    this.sound.volume = 0.1
+
     this.celulaLaser = [];
 
     this.keys = keys;
@@ -41,10 +45,10 @@ class Player {
     if (death === true) {
       this.ctx.drawImage(
         this.imageDeath,
-        this.posX -20,
+        this.posX - 20,
         this.posY,
         this.width + 40,
-        this.height/1.5
+        this.height / 1.5
       );
     } else {
       if (this.rightFrame === true) {
@@ -55,6 +59,7 @@ class Player {
           this.width,
           this.height
         );
+        this.sound.play();
         this.timeOut = setTimeout(() => {
           this.rightFrame = false;
         }, 100);
@@ -66,6 +71,7 @@ class Player {
           this.width,
           this.height
         );
+        this.sound.play();
         this.timeOut = setTimeout(() => {
           this.leftFrame = false;
         }, 100);

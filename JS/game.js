@@ -9,7 +9,7 @@ const Game = {
   checkObs: 2,
 
   //Game atributes
-  lifes: 1,
+  lifes: 3,
   death: false,
   score: 0,
   velScore: 10,
@@ -25,10 +25,10 @@ const Game = {
   },
 
   init() {
-    this.canvas = document.getElementById("canvas");
+    this.canvas = document.getElementById("game");
     this.ctx = this.canvas.getContext("2d");
     this.width = 400;
-    this.height = window.innerHeight * 0.97;
+    this.height = 700;
     this.canvas.width = this.width;
     this.canvas.height = this.height;
 
@@ -37,7 +37,7 @@ const Game = {
 
   start() {
     this.reset();
-
+    this.theme.play();
     this.intervalID = setInterval(() => {
       this.framesCounter++;
 
@@ -53,10 +53,12 @@ const Game = {
 
       //Colider
       if (this.isCollisionObstacles()) {
+        this.sound.play();
         this.obstacles.shift();
         this.lifes--;
       }
       if (this.isCollisionEnemies()) {
+        this.sound.play();
         this.enemies.shift();
         this.lifes--;
       }
@@ -68,6 +70,9 @@ const Game = {
       //Framescounter Reset
       if (this.framesCounter > 1000) this.framesCounter = 0;
 
+      // //LevelUP
+      // if(this.score === 20)this.velDificulty = 2;
+
       //Game Over
       if (this.lifes === 0) this.gameOver();
     }, 1000 / this.fps);
@@ -78,6 +83,13 @@ const Game = {
     this.background = new Background(
       this.ctx,
       "IMAGES/Background_dirtroad.png",
+      this.width,
+      this.height,
+      this.velDificulty
+    );
+    this.background2 = new Background(
+      this.ctx,
+      "IMAGES/interface_over.png",
       this.width,
       this.height
     );
@@ -101,6 +113,14 @@ const Game = {
       this.width,
       this.vidas
     );
+    //SOUNDs
+    this.sound = new Audio();
+    this.sound.src = "SOUNDS/colision.wav";
+    this.theme = new Audio();
+    this.theme.src = "SOUNDS/theme.mp3";
+    this.theme.volume = 0.5;
+    //GameOver
+    this.gmOver = new Gameover(this.ctx, this.width, this.height);
   },
 
   clear() {
@@ -113,7 +133,10 @@ const Game = {
     this.celulaLaser = this.player.celulaLaser;
     this.obstacles.forEach(obstacle => obstacle.draw(this.framesCounter));
     this.enemies.forEach(enemy => enemy.draw(this.framesCounter));
-    this.enemiesDeath.forEach(enemyDeath => enemyDeath.draw(this.framesCounter))
+    this.enemiesDeath.forEach(enemyDeath =>
+      enemyDeath.draw(this.framesCounter)
+    );
+    this.background2.draw();
     this.ScoreBoard.draw(this.score, this.lifes);
   },
 
@@ -150,14 +173,12 @@ const Game = {
       )
     );
   },
-  
 
   clearObstacles() {
     this.obstacles = this.obstacles.filter(
       obstacle => obstacle.posY <= this.height
     );
     this.enemies = this.enemies.filter(enemy => enemy.posY <= this.height);
-    
   },
 
   isCollisionObstacles() {
@@ -190,7 +211,6 @@ const Game = {
           laser.posX > enemy.posX &&
           laser.posX < enemy.posX + enemy.width
         ) {
-          
           let addEnemy = this.enemiesDeath.push(
             new EnemiesDeath(
               this.ctx,
@@ -198,11 +218,9 @@ const Game = {
               enemy.posY,
               enemy.width,
               enemy.height
-              
             )
-           
           );
-          
+
           addEnemy;
           this.enemies.shift();
           this.timeOutDeath = setTimeout(() => {
@@ -221,7 +239,11 @@ const Game = {
 
   gameOver() {
     this.death = true;
+    this.gmOver.draw();
+    this.gmOver.sound();
+
     this.timeOut = setTimeout(() => {
+      this.theme.pause();
       clearInterval(this.intervalID);
     }, 300);
   },

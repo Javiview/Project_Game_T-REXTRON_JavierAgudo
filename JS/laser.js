@@ -11,10 +11,14 @@ class Laser {
 
     this.image = new Image();
     this.image.src = "IMAGES/laser.png";
+    this.sound = new Audio();
+    this.sound.src ="SOUNDS/laser.wav"
+    this.sound.play()
   }
 
   draw() {
     this.ctx.drawImage(this.image, this.posX, this.posY, 5, 60);
+    
   }
 
   move() {
