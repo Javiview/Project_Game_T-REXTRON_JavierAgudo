@@ -89,7 +89,7 @@ const Game = {
     );
     this.background2 = new Background(
       this.ctx,
-      "IMAGES/interface_over.png",
+      "IMAGES/Interface_over.png",
       this.width,
       this.height
     );
