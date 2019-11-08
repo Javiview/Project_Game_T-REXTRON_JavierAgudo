@@ -91,7 +91,8 @@ const Game = {
       this.ctx,
       "IMAGES/Interface_over.png",
       this.width,
-      this.height
+      this.height,
+      this.velDificulty
     );
     //Player
     this.player = new Player(
